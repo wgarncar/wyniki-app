@@ -1,26 +1,72 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {
+  Component
+} from "react";
+import {
+  Route,
+  NavLink,
+  HashRouter
+} from "react-router-dom";
+import Login from "./login/login";
+import Register from "./login/register";
+import MainPage from "./additional/main";
+import Results from "./Results/results";
+import "./App.css";
 
 class App extends Component {
+  onLogin = () => {
+    console.log("Login");
+  };
+
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+    return ( <
+      HashRouter >
+      <
+      div >
+      <
+      ul className = "header" >
+      <
+      li >
+      <
+      NavLink to = "/additional/main" > Main < /NavLink> < /
+      li > <
+      li >
+      <
+      NavLink to = "/Results/results" > Results < /NavLink> < /
+      li > <
+      li >
+      <
+      NavLink to = "/login/login" > Login < /NavLink> < /
+      li > <
+      li >
+      <
+      NavLink to = "/login/register" > Register < /NavLink> < /
+      li > <
+      /ul> <
+      div >
+      <
+      Route path = "/additional/main"
+      component = {
+        MainPage
+      }
+      /> <
+      Route path = "/Results/results"
+      component = {
+        Results
+      }
+      /> <
+      Route path = "/login/login"
+      component = {
+        Login
+      }
+      /> <
+      Route path = "/login/register"
+      component = {
+        Register
+      }
+      /> < /
+      div > <
+      /div> < /
+      HashRouter >
     );
   }
 }
