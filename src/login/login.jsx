@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import * as userService from "../services/userService";
 
 function validate(email, password) {
   // true means invalid, so our conditions got reversed
   return {
-    email: email.length === 0 || !email.includes("@"),
-    password: password.length <= 8
+    email: email.length === 0 || !email.includes("@") || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i),
+    password: password.length < 8
   };
 }
 
@@ -29,19 +30,38 @@ class Login extends Component {
     this.setState({ password: evt.target.value });
   };
 
-  handleSubmit = evt => {
+  handleSubmit = async evt => {
     if (!this.canBeSubmitted()) {
       evt.preventDefault();
       return;
     }
     const { email, password } = this.state;
-    alert(`Signed up with email: ${email} password: ${password}`);
+    
+    alert(`Signed in with email: ${email} password: ${password}`);
   };
 
   canBeSubmitted() {
     const errors = validate(this.state.email, this.state.password);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
     return !isDisabled;
+  }
+
+  onSubmit = async () =>{
+    try{
+      console.log("Spierdoliło się czy nie?");
+      const {data: jwt} = await userService.login(this.state);
+      console.log(jwt);
+      localStorage.setItem('token', jwt);
+      this.props.history.push("/Main");
+    } catch(ex){
+      if(ex.eresponse && ex.response.status === 400){
+        const errors = {...this.state.errors};
+        errors.username = ex.response.data;
+        this.setState({errors});
+      }
+
+    }
+    
   }
 
   render() {
@@ -65,7 +85,7 @@ class Login extends Component {
             value={this.state.password}
             onChange={this.handlePasswordChange}
           />
-          <button disabled={isDisabled}>Sign in</button>
+          <button disabled={isDisabled} onClick={this.onSubmit}>Sign in</button>
         </form>
       </div>
     );
