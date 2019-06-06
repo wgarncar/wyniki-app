@@ -68,7 +68,7 @@ class Register extends Component {
       console.log(response);
       console.log(response.data['token']);
       localStorage.setItem('token', response.data['token']);
-      this.props.history.push("/Main");
+      window.location = "/";
     } catch(ex){
       if(ex.eresponse && ex.response.status === 400){
         const errors = {...this.state.errors};

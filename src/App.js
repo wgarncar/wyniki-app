@@ -14,6 +14,7 @@ import Login from "./login/login";
 import Register from "./login/register";
 import MainPage from "./additional/main";
 import Results from "./Results/results";
+import Logout from "./login/logout";
 import Tournament from "./additional/tournament";
 import NavBar from "./additional/navbar";
 import "./App.css";
@@ -32,36 +33,18 @@ class App extends Component {
     catch(ex){}
   }
 
-  
-
 
   
 
   render() {
     return (
-      <div >
       
-      <HashRouter >
-      <div >
-      <ul className = "header" >
-      <li >
-      <NavLink to = "/additional/main" > Main </NavLink> 
-      </li > 
-      < li >
-      <NavLink to = "/Results/results" > Results </NavLink> 
-      </li > 
-      {!this.state.user && <li >
-       <NavLink to = "/login/login" > Login </NavLink> 
-      </li > }
-      {!this.state.user && <li >
-      <NavLink to = "/login/register" > Register </NavLink> 
-      </li >}
-      { this.state.user && this.state.user.class === "xylobolus" && <li >
-      <NavLink to = "/additional/tournament" > Tournament </NavLink> 
-      </li > }
-      </ul> 
-      <div >
-      <Route path = "/additional/main"
+      <React.Fragment>
+        <ToastContainer/>
+        <NavBar user={this.state.user} />
+        <main className="container">
+          <Switch>
+          <Route path = "/additional/main"
       component = {
         MainPage
       }
@@ -86,10 +69,14 @@ class App extends Component {
         Tournament
       }
       /> 
-      </div > 
-      </div> 
-      </HashRouter >
-      </div>
+      <Route path = "/login/logout"
+      component = {
+        Logout
+      }
+      /> 
+          </Switch>
+        </main>
+      </React.Fragment>
     );
   }
 }
